@@ -7,6 +7,7 @@
 from selenium import webdriver
  
 def post_twitter( user_name, password):
+   # chromedriver落としてきて同じディレクトリに配置。
    browser = webdriver.Chrome(executable_path="./chromedriver")
    browser.get("https://twitter.com/")
  
