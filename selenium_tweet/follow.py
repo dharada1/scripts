@@ -1,8 +1,7 @@
 # coding: utf-8
 from selenium import webdriver
  
-def post_twitter( user_name, password, user_id):
-   # chromedriver落としてきて同じディレクトリに配置。
+def post_twitter(user_name, password, user_id):
    browser = webdriver.Chrome(executable_path="./chromedriver")
    browser.get("https://twitter.com/")
  
@@ -13,16 +12,22 @@ def post_twitter( user_name, password, user_id):
    pass_wd.send_keys(password)
    pass_wd.submit()
  
-   browser.get("https://twitter.com/" + user_id)
+   browser.get("https://twitter.com/" + user_id + "/following")
+
+   for button in browser.find_elements_by_class_name("user-actions-follow-button"):
+      button.click()
+      # TODO
+      # selenium.common.exceptions.WebDriverException: Message: unknown error: Element <span class="user-actions-follow-button js-follow-btn follow-button">...</span> is not clickable at point (645, 13). Other element would receive the click: <div class="container">...</div>
    browser.close()
  
 if __name__ == "__main__":
-   from getpass import getpass
-   user_id = input("who to open :")
+   user_id = "hikakin"
 
+   secrets = open(".secrets", "r")
+   line = secrets.read().split(" ")
+   secrets.close()
 
-   test_data = open(".secrets", "r")
-   contents = test_data.read().split(" ")
-   test_data.close()
+   user_name = line[0]
+   password  = line[1]
 
-   post_twitter(contents[0], contents[1], user_id)
+   post_twitter(user_name, password, user_id)
